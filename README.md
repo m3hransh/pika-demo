@@ -1,17 +1,7 @@
-# FastAPI Starter Using Nix
+# Pika Starter Using Nix
 
-This is a starter repository for using Nix to manage dependencies for both development and deployment of a FastAPI project. The setup leverages `flake` to ensure reproducibility and consistency across environments.
-
-## Why You Should Use Nix
-
-Nix is a powerful tool and language that allows you to declaratively manage your development and deployment environments. By using Nix, you can ensure that your project's dependencies are defined in a way that guarantees consistency across different machines and setups. 
-
-Some benefits of using Nix include:
-- **Reproducibility**: Every environment is built exactly the same way, ensuring no "it works on my machine" issues.
-- **Declarative Configuration**: Define your environment in a single file, making it easy to share and collaborate with others.
-- **Isolated Environments**: Nix provides isolated development environments that prevent dependency conflicts.
-
-There is much more to Nix, and if you're interested in learning more, you can explore the [official Nix documentation](https://nixos.org/manual/nix/stable/).
+This a demo for using RabbitMQ using [Pika](https://pika.readthedocs.io/en/stable/) library. This project has been developed using nix for being self-contained without any
+external dependencies except for nix.
 
 ## Getting Started with Development
 
@@ -40,15 +30,16 @@ Copy code
 $ direnv allow
 Once set up, Direnv will automatically load the environment when you enter the project directory.
 
-3. Run the Server
-To run the FastAPI server, use the following command:
+### 3. Trying out
+The server autmatically will be started when you go to nix develop.
+1. Validate that using `rabbitmqctl status`, otherwise use rabbitmq-server.
 
-bash
-Copy code
-$ poetry run uvicorn rest_api:app --reload
-The --reload flag is used for auto-reloading the server whenever code changes are detected, which is useful during development.
+2. Run the Consumer using:
+```sh
+$ python src/receive.py
+```
+3. Run the Producer using:
+```sh
+$ python src/send.py
+```
 
-## Deployment
-For deployment, you can leverage Nix's ability to create reproducible builds. This ensures that the environment on the deployment server matches the development environment exactly. Consult the Nix documentation and examples to tailor the deployment process to your needs.
-
-This repository is designed to give you a head start with FastAPI and Nix. Feel free to customize it according to your project's requirements.

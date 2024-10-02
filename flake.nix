@@ -27,8 +27,28 @@
         #
         # Use this shell for developing your app.
         devShells.default = pkgs.mkShell {
-          packages = [ pkgs.poetry  pkgs.rabbitmq-server];
+          packages = [ pkgs.poetry pkgs.rabbitmq-server ];
           inputsFrom = [ self.packages.${system}.myapp ];
+          shellHook = ''
+            mkdir -p ./rabbitmq_data/mnesia
+            mkdir -p ./rabbitmq_data/log
+
+            # Set environment variables to use the writable directories
+            export RABBITMQ_MNESIA_BASE=$PWD/rabbitmq_data/mnesia
+            export RABBITMQ_LOGS=$PWD/rabbitmq_data/log/rabbitmq.log
+
+            # Optional: specify a custom configuration file path
+            export RABBITMQ_CONFIG_FILE=$PWD/rabbitmq.conf
+
+            # Start RabbitMQ in the background
+            echo "Starting RabbitMQ with writable data directory..."
+            rabbitmq-server -detached
+            echo "RabbitMQ is now running in the background.";
+          '';
+          shellExit = ''
+            echo "Stopping RabbitMQ server..."
+            rabbitmqctl shutdown
+          '';
         };
 
         # Shell for poetry.
@@ -41,4 +61,5 @@
         };
       });
 }
+
 

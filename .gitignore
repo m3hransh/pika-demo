@@ -164,3 +164,4 @@ cython_debug/
 
 # direnv cache
 .direnv
+rabbitmq_data/
